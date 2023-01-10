@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import lg1 from "./img/lg1.jpg";
+import lg2 from "./img/lg2.jpg";
+import lg3 from "./img/lg3.jpg";
+import lg4 from "./img/lg4.jpg";
+import "./css/style.css";
+import "./App.css";
+import NavBar from "./NavBar";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./Home";
+import Services from "./Services";
+import Error from "./Error";
+import LoginPage from "./LoginPage";
+import Register from "./Register";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <body>
+      <Router>
+        <Routes>
+          <Route path="/gms/*" element={<Error />} />
+          <Route path="/gms/" element={<Home />} />
+          <Route path="/gms/home" element={<Home />} />
+          <Route path="/gms/login" element={<LoginPage />} />
+          <Route path="/gms/register" element={<Register />} />
+          <Route path="/gms/services" element={<Services />} />
+        </Routes>
+      </Router>
+    </body>
   );
 }
 
