@@ -19,7 +19,15 @@ function App() {
     <body>
       <Router>
         <Routes>
-          <Route path="/gms/*" element={<Error />} />
+          <Route
+            path="/gms/*"
+            element={
+              <>
+                <NavBar />
+                <Error />
+              </>
+            }
+          />
           <Route path="/gms/" element={<Home />} />
           <Route path="/gms/home" element={<Home />} />
           <Route path="/gms/login" element={<LoginPage />} />

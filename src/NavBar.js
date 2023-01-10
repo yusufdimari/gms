@@ -6,7 +6,19 @@ import firebase from "./firebase/firebase";
 
 export default function NavBar() {
   const [user, setUser] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const toggleNav = () => {
+    const nav = document.querySelector("nav");
+    if (!open) {
+      nav.classList.add("toggler-open");
+      setOpen(true);
+    } else {
+      nav.classList.remove("toggler-open");
+      setOpen(false);
+    }
+    console.log(nav);
+  };
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -27,7 +39,7 @@ export default function NavBar() {
 
   return (
     <div class="container-fluid nav-container">
-      <div class="toggler">
+      <div class="toggler" onClick={toggleNav}>
         <div class="line1"></div>
         <div class="line2"></div>
         <div class="line3"></div>

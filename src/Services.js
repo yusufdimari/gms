@@ -1,31 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { usePaystackPayment } from "react-paystack";
 import lg3 from "./img/lg3.jpg";
 import firebase from "./firebase/firebase";
+import Paystack from "./firebase/Paystack";
 
+const config = {
+  reference: new Date().getTime().toString(),
+  email: "ysf.dimari.yd@gmail.com",
+  amount: 500000000, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+  publicKey: "pk_test_06174b7adfd2e36c321ed903db156f9edee8f827",
+};
 export default function Services() {
   const navigate = useNavigate();
   const [user, setUser] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const onSuccess = () => {
+    const form = document.querySelector(".app-form");
+    form.style.display = "none";
+  };
+  const toggleNav = () => {
+    const nav = document.querySelector("nav");
+    if (!open) {
+      nav.classList.add("toggler-open");
+      setOpen(true);
+    } else {
+      nav.classList.remove("toggler-open");
+      setOpen(false);
+    }
+    console.log(nav);
+  };
+
+  const closeForm = () => {
+    const form = document.querySelector(".app-form");
+    form.style.display = "none";
+    setFormOpen(false);
+  };
   useEffect(() => {
     // console.log(user);
-    let formOpen = false;
     const form = document.querySelector(".app-form");
     const button = document.querySelectorAll(".btn");
-    const cancel = document.querySelector(".cancel");
-    cancel.addEventListener("click", function (e) {
-      e.preventDefault();
-      form.style.display = "none";
-      formOpen = false;
-    });
     button.forEach((but) => {
       but.addEventListener("click", function (e) {
         if (!formOpen) {
           form.style.display = "block";
-          formOpen = true;
+          setFormOpen(!formOpen);
         } else {
           // form.classList.remove("form-open");
           form.style.display = "none";
-          formOpen = !formOpen;
+          setFormOpen(!formOpen);
         }
       });
     });
@@ -51,7 +75,7 @@ export default function Services() {
   return (
     <div>
       <div class="container-fluid nav-container">
-        <div class="toggler">
+        <div class="toggler" onClick={toggleNav}>
           <div class="line1"></div>
           <div class="line2"></div>
           <div class="line3"></div>
@@ -155,7 +179,12 @@ export default function Services() {
         </div>
       </div>
       <div class="app-form container-fluid dash-content profile ">
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form
+          action=""
+          method="POST"
+          enctype="multipart/form-data"
+          class="payment"
+        >
           <div class="row">
             <div class="form-group col-md-6">
               <label for="">FirstName</label>
@@ -213,18 +242,25 @@ export default function Services() {
               </select>
             </div>
             <div class="form-group col-md-6">
-              <input
-                type="submit"
-                class=" form-control btn-primary add-btn align pay"
-                name="paynow"
-                value="Pay Now"
-              />
-              <input
-                type="submit"
+              <Paystack onSuccess={onSuccess} />
+              <button
                 class=" form-control btn-primary add-btn  align cancel"
                 name="cancel"
                 value="Cancel"
-              />
+                onClick={(e) => {
+                  e.preventDefault();
+                  closeForm();
+                }}
+                style={{
+                  padding: 10,
+                  borderRadius: 10,
+                  color: "white",
+                  fontWeight: "bold",
+                  width: "20%",
+                }}
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </form>

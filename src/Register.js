@@ -25,8 +25,7 @@ export default function Register() {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((res) => {
-        res.additionalUserInfo.username = fname + "" + mname + "" + lname;
-        navigate("../gms/login");
+        login(email, password).then((res) => navigate("../gms/login"));
       });
   };
 
